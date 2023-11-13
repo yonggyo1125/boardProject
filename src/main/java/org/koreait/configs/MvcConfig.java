@@ -17,6 +17,8 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private FileUploadConfig fileUploadConfig;
 
+
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 

@@ -20,5 +20,9 @@ public class MemberInfoService implements UserDetailsService {
         Member member = repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
 
         return MemberInfo.builder()
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .member(member)
+                .build();
     }
 }

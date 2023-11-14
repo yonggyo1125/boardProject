@@ -1,5 +1,8 @@
 package org.koreait.configs;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.koreait.models.member.LoginFailureHandler;
 import org.koreait.models.member.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.io.IOException;
 
 @Configuration
 @EnableConfigurationProperties(FileUploadConfig.class)
@@ -48,6 +55,20 @@ public class SecurityConfig {
                     .requestMatchers("/admin/**").hasAuthority("ADMIN") // 관리자 권한만 접근
                     .anyRequest().permitAll(); // 나머지 페이지는 권한 필요 X
         });
+
+
+        http.exceptionHandling(c -> {
+           c.authenticationEntryPoint((req, resp, e) -> {
+                String URI = req.getRequestURI();
+                if (URI.indexOf("/admin") != -1) { // 관리자 페이지 - 401 응답 코드
+                    resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "NOT AUTHORIZED");
+                } else { // 회원전용 페이지(예 - /mypage ) -> 로그인 페이지 이동
+                    String url = req.getContextPath() + "/member/login";
+                    resp.sendRedirect(url);
+                }
+           });
+        });
+
         /* 인가 설정 - 접근 통제 E */
 
         return http.build();

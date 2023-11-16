@@ -3,18 +3,15 @@ package org.koreait.controllers.members;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.koreait.commons.MemberUtil;
+import org.koreait.commons.Utils;
 import org.koreait.entities.Member;
-import org.koreait.models.member.MemberInfo;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.koreait.commons.Utils;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -42,6 +39,10 @@ public class MemberController {
     @ResponseBody
     @GetMapping("/info")
     public void info() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+        System.out.println("principal: " + principal);
 
         Member member = memberUtil.getMember();
         if (memberUtil.isLogin()) {

@@ -1,5 +1,6 @@
 package org.koreait.configs;
 
+import org.koreait.models.member.MemberInfo;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,10 +13,15 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = auth.getPrincipal();
-        System.out.println("principal: " + principal);
+        String email = null;
 
-        return Optional.empty();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal(); // 비회원 - String(문자열) : anonymousUser, 회원 - UserDetails 구현 객체
+        if (auth != null && principal instanceof MemberInfo) {
+            MemberInfo member = (MemberInfo)principal;
+            email = member.getEmail();
+        }
+
+        return Optional.ofNullable(email);
     }
 }

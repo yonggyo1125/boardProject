@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @NoArgsConstructor @AllArgsConstructor
-public class BoardData extends Base {
+public class BoardData extends BaseMember {
     @Id
     @GeneratedValue
     private Long seq;

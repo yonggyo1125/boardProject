@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.koreait.commons.constants.MemberType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -34,5 +37,8 @@ public class Member extends Base {
     @Column(length=10, nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberType mtype = MemberType.USER;
+
+    @OneToMany(mappedBy = "member")
+    private List<BoardData> items = new ArrayList<>();
 
 }

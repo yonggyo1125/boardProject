@@ -1,6 +1,7 @@
 package org.koreait.jpaex;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.Member;
@@ -8,13 +9,12 @@ import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-@TestPropertySource(properties = "spring.profiles.active=test")
+//@TestPropertySource(properties = "spring.profiles.active=test")
 public class Ex06 {
     @Autowired
     private MemberRepository memberRepository;
@@ -44,7 +44,12 @@ public class Ex06 {
         }
 
         boardDataRepository.saveAllAndFlush(items);
+    }
 
-
+    @Test
+    void test1() {
+        BoardData data = boardDataRepository.findById(1L).orElse(null);
+        Member member = data.getMember();
+        System.out.println(member);
     }
 }

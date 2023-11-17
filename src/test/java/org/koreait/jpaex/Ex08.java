@@ -1,5 +1,7 @@
 package org.koreait.jpaex;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
@@ -9,15 +11,19 @@ import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-//@TestPropertySource(properties = "spring.profiles.active=test")
+@TestPropertySource(properties = "spring.profiles.active=test")
 public class Ex08 {
     @Autowired
     private BoardDataRepository boardDataRepository;
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @BeforeEach
     void init() {
@@ -35,6 +41,7 @@ public class Ex08 {
                 .member(member)
                 .build();
         boardDataRepository.saveAndFlush(item);
+        em.clear();
     }
 
     @Test

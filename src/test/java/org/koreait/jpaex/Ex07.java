@@ -57,7 +57,7 @@ public class Ex07 {
     @Test
     void test2() {
         HashTag tag = hashTagRepository.findById("태그2").orElse(null);
-        List<BoardData> items = tag.getItems();
-        items.stream().forEach(System.out::println);
+        //List<BoardData> items = tag.getItems();
+        //items.stream().forEach(System.out::println);
     }
 }

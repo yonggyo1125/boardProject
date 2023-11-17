@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.Member;
+import org.koreait.entities.MemberProfile;
 import org.koreait.repositories.BoardDataRepository;
+import org.koreait.repositories.MemberProfileRepository;
 import org.koreait.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,13 +25,21 @@ public class Ex06 {
     @Autowired
     private BoardDataRepository boardDataRepository;
 
+    @Autowired
+    private MemberProfileRepository memberProfileRepository;
+
     @BeforeEach
     void init() {
+        MemberProfile profile = new MemberProfile();
+        profile.setImage("이미지 경로...");
+        memberProfileRepository.saveAndFlush(profile);
+
         Member member = Member.builder()
                 .email("user01@test.org")
                 .password("123456")
                 .userNm("사용자01")
                 .mtype(MemberType.USER)
+                .profile(profile)
                 .build();
 
         memberRepository.saveAndFlush(member);
@@ -59,5 +69,20 @@ public class Ex06 {
         Member member = memberRepository.findById(1L).orElse(null);
         List<BoardData> items = member.getItems();
         items.stream().forEach(System.out::println);
+    }
+
+    @Test
+    void test3() {
+        Member member = memberRepository.findById(1L).orElse(null);
+        MemberProfile profile = member.getProfile();
+
+        System.out.println(profile);
+    }
+
+    @Test
+    void test4() {
+        MemberProfile profile = memberProfileRepository.findById(1L).orElse(null);
+        Member member = profile.getMember();
+        System.out.println(member);
     }
 }

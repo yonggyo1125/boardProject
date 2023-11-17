@@ -1,10 +1,8 @@
 package org.koreait.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity @Data
 public class MemberProfile {
@@ -13,4 +11,8 @@ public class MemberProfile {
 
     @Column(length=100)
     private String image;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "profile")
+    private Member member;
 }

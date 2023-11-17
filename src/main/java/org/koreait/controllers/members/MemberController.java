@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/member")
@@ -75,6 +78,30 @@ public class MemberController {
         String email = member2.getEmail(); // 2차 쿼리 실행
         System.out.println(email);
 
+    }
+
+    @ResponseBody
+    @GetMapping("/info2")
+    public void info2() {
+        Member member = Member.builder()
+                .email("user01@test.org")
+                .password("123456")
+                .userNm("사용자01")
+                .mtype(MemberType.USER)
+                .build();
+        memberRepository.saveAndFlush(member);
+
+        List<BoardData> items = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            BoardData item = BoardData.builder()
+                    .subject("제목" + i)
+                    .content("내용" + i)
+                    .member(member)
+                    .build();
+            items.add(item);
+        }
+
+        boardDataRepository.saveAllAndFlush(items);
     }
 
 }

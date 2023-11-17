@@ -1,17 +1,20 @@
 package org.koreait.jpaex;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.HashTag;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.HashTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
+@TestPropertySource(properties = "spring.profiles.active=test")
 public class Ex07 {
 
     @Autowired
@@ -36,11 +39,25 @@ public class Ex07 {
             BoardData item = BoardData.builder()
                     .subject("제목" + i)
                     .content("내용" + i)
-                    .tags(tags)
+                    //.tags(tags)
                     .build();
             items.add(item);
         }
 
         boardDataRepository.saveAllAndFlush(items);
+    }
+
+    @Test
+    void test1() {
+        BoardData data = boardDataRepository.findById(1L).orElse(null);
+        //List<HashTag> tags = data.getTags();
+        //tags.stream().forEach(System.out::println);
+    }
+
+    @Test
+    void test2() {
+        HashTag tag = hashTagRepository.findById("태그2").orElse(null);
+        List<BoardData> items = tag.getItems();
+        items.stream().forEach(System.out::println);
     }
 }

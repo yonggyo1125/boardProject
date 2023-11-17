@@ -1,10 +1,8 @@
 package org.koreait.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,7 @@ public class HashTag {
     @Column(length=30)
     private String tag;
 
-    @ManyToMany(mappedBy = "tags")
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "tags", fetch= FetchType.EAGER)
     private List<BoardData> items = new ArrayList<>();
 }

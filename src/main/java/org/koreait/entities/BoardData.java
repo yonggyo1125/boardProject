@@ -26,7 +26,4 @@ public class BoardData extends BaseMember {
     @JoinColumn(name="userNo")
     private Member member;
 
-    //@ManyToMany(fetch=FetchType.LAZY)
-    //private List<HashTag> tags = new ArrayList<>();
-
 }

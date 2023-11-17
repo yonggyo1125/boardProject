@@ -9,12 +9,13 @@ import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-//@TestPropertySource(properties = "spring.profiles.active=test")
+@TestPropertySource(properties = "spring.profiles.active=test")
 public class Ex06 {
     @Autowired
     private MemberRepository memberRepository;
@@ -51,5 +52,12 @@ public class Ex06 {
         BoardData data = boardDataRepository.findById(1L).orElse(null);
         Member member = data.getMember();
         System.out.println(member);
+    }
+
+    @Test
+    void test2() {
+        Member member = memberRepository.findById(1L).orElse(null);
+        List<BoardData> items = member.getItems();
+        items.stream().forEach(System.out::println);
     }
 }

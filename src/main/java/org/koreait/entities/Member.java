@@ -1,10 +1,7 @@
 package org.koreait.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.koreait.commons.constants.MemberType;
 
 import java.util.ArrayList;
@@ -38,7 +35,12 @@ public class Member extends Base {
     @Enumerated(EnumType.STRING)
     private MemberType mtype = MemberType.USER;
 
-    @OneToMany(mappedBy = "member")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<BoardData> items = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name="profile_seq")
+    private MemberProfile profile;
 
 }

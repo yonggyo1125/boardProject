@@ -59,6 +59,17 @@ public class Ex02 {
 
     @Test
     void test1() {
-        List<BoardData> items = boardDataRepository.findAll(); // 10개
+        List<BoardData> items = boardDataRepository.findAll(); // 10개 // 1차 쿼리
+        for (BoardData item : items) {
+            Member member = item.getMember();
+            String email = member.getEmail(); // 2차 쿼리
+            System.out.println(email);
+        }
+    }
+
+    @Test
+    void test2() {
+        List<BoardData> items = boardDataRepository.getList2();
+
     }
 }

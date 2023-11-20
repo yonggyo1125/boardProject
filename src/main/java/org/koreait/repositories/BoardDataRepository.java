@@ -19,4 +19,8 @@ public interface BoardDataRepository extends JpaRepository<BoardData, Long>, Que
 
     @Query("SELECT b FROM BoardData b WHERE b.subject LIKE :key1 OR b.content LIKE :key2 ORDER BY b.seq DESC")
     List<BoardData> getList(@Param("key1") String subject, @Param("key2") String content);
+
+
+    @Query("SELECT b FROM BoardData b JOIN FETCH b.member")
+    List<BoardData> getList2();
 }

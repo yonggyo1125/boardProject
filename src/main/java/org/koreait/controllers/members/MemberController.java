@@ -104,4 +104,15 @@ public class MemberController {
         boardDataRepository.saveAllAndFlush(items);
     }
 
+    @ResponseBody
+    @GetMapping("/info3")
+    public void info3() {
+        List<BoardData> items = boardDataRepository.findAll();
+        for (BoardData item : items) {
+            Member member = item.getMember();
+            String email = member.getEmail();
+            System.out.println(email);
+        }
+        System.out.println("111");
+    }
 }

@@ -19,9 +19,17 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final QBase _super = new QBase(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final StringPath email = createString("email");
 
     public final StringPath mobile = createString("mobile");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final EnumPath<org.koreait.commons.constants.MemberType> mtype = createEnum("mtype", org.koreait.commons.constants.MemberType.class);
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.Member;
+import org.koreait.models.board.BoardListService;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class Ex02 {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    private BoardListService listService;
 
     @BeforeEach
     void init() {
@@ -71,5 +75,15 @@ public class Ex02 {
     void test2() {
         List<BoardData> items = boardDataRepository.getList2();
 
+    }
+
+    @Test
+    void test3() {
+        List<BoardData> items = listService.getList();
+    }
+
+    @Test
+    void test4() {
+        List<BoardData> items = boardDataRepository.findBySubjectContaining("목");
     }
 }

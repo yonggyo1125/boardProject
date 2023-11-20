@@ -2,6 +2,7 @@ package org.koreait.repositories;
 
 import org.koreait.entities.BoardData;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -11,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BoardDataRepository extends JpaRepository<BoardData, Long>, QuerydslPredicateExecutor<BoardData> {
+
+    @EntityGraph(attributePaths = "member")
+    List<BoardData> findBySubjectContaining(String key);
 
     List<BoardData> findByCreatedAtBetween(LocalDateTime sdate, LocalDateTime edate, Pageable pageble);
 

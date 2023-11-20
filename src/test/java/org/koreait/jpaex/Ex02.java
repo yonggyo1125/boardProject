@@ -1,6 +1,7 @@
 package org.koreait.jpaex;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
@@ -13,46 +14,51 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
-@TestPropertySource(properties = "spring.profiles.active=test")
 @Transactional
-public class Ex01 {
-    @Autowired
-    private BoardDataRepository boardDataRepository;
+@TestPropertySource(properties = "spring.profiles.active=test")
+public class Ex02 {
 
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
+    private BoardDataRepository boardDataRepository;
+
+    @PersistenceContext
     private EntityManager em;
 
     @BeforeEach
     void init() {
         Member member = Member.builder()
                 .email("user01@test.org")
-                .password("123456")
+                .password("12345678")
                 .userNm("사용자01")
                 .mtype(MemberType.USER)
+                .mobile("0100000000")
                 .build();
+
         memberRepository.saveAndFlush(member);
 
-        BoardData item = BoardData.builder()
-                .subject("제목")
-                .content("내용")
-                .member(member)
-                .build();
-        boardDataRepository.saveAndFlush(item);
+        List<BoardData> items = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            BoardData item = BoardData.builder()
+                    .subject("제목" + i)
+                    .content("내용" + i)
+                    .member(member)
+                    .build();
+            items.add(item);
+        }
+
+        boardDataRepository.saveAllAndFlush(items);
         em.clear();
     }
 
     @Test
     void test1() {
-
-
-        BoardData data = boardDataRepository.findById(1L).orElse(null);
-
-        Member member2 = data.getMember();
-        String email = member2.getEmail(); // 2차 쿼리 실행
-        System.out.println(email);
+        List<BoardData> items = boardDataRepository.findAll(); // 10개
     }
 }

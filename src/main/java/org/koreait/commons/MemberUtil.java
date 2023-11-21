@@ -2,6 +2,7 @@ package org.koreait.commons;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.koreait.commons.constants.MemberType;
 import org.koreait.entities.Member;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,14 @@ public class MemberUtil {
 
     public boolean isLogin() {
         return getMember() != null;
+    }
+
+    /**
+     * 관리자 여부 체크
+     * @return
+     */
+    public boolean isAdmin() {
+        return isLogin() && getMember().getMtype() == MemberType.ADMIN;
     }
 
     public Member getMember() {

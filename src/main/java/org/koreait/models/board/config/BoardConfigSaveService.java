@@ -1,6 +1,7 @@
 package org.koreait.models.board.config;
 
 import lombok.RequiredArgsConstructor;
+import org.koreait.commons.constants.BoardAuthority;
 import org.koreait.controllers.admins.BoardConfigForm;
 import org.koreait.entities.Board;
 import org.koreait.repositories.BoardRepository;
@@ -17,10 +18,17 @@ public class BoardConfigSaveService {
         String bId = form.getBId();
         String mode = form.getMode();
         Board board = null;
-        if (StringUtils.containsWhitespace("edit") && StringUtils.hasText(bId)) {
+        if (mode.equals("edit") && StringUtils.hasText(bId)) {
             board = boardRepository.findById(bId).orElseThrow(BoardNotFoundException::new);
+        } else { // 추가
+            board = new Board();
+            board.setBId(bId);
         }
 
+        board.setActive(form.isActive());
+        board.setAuthority(BoardAuthority.valueOf(form.getAuthority()));
+        board.setCategory(form.getCategory());
 
+        boardRepository.saveAndFlush(board);
     }
 }
